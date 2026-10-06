@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Plan zajęć: informatyka + marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#EEF1F6; --surface:#FFFFFF; --ink:#141A2B; --muted:#586078; --line:#D3D9E6;
+  --info-bg:#DCE6FF; --info-bd:#3559E0; --info-ink:#13246B;
+  --mark-bg:#FADBEA; --mark-bd:#B8246F; --mark-ink:#5A0D36;
+  --bad:#D92D20; --bad-soft:#FDE4E1; --hatch:rgba(217,45,32,.5);
+  --warn:#C9971A; --warn-soft:#FFF0C7; --warn-ink:#6B4A00; --ok:#1B7F3B;
+  --head:'Bricolage Grotesque','Figtree',system-ui,sans-serif;
+  --body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1320; --surface:#172034; --ink:#E9EDF8; --muted:#9AA4BD; --line:#2A3550;
+    --info-bg:#1D2E66; --info-bd:#7C9BFF; --info-ink:#D3DEFF;
+    --mark-bg:#4B1E3A; --mark-bd:#FF7FBF; --mark-ink:#FFD6EA;
+    --bad:#FF6B5E; --bad-soft:#4A2020; --hatch:rgba(255,107,94,.55);
+    --warn:#E8B840; --warn-soft:#45360F; --warn-ink:#FFE19A; --ok:#6EE09A;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1320; --surface:#172034; --ink:#E9EDF8; --muted:#9AA4BD; --line:#2A3550;
+  --info-bg:#1D2E66; --info-bd:#7C9BFF; --info-ink:#D3DEFF;
+  --mark-bg:#4B1E3A; --mark-bd:#FF7FBF; --mark-ink:#FFD6EA;
+  --bad:#FF6B5E; --bad-soft:#4A2020; --hatch:rgba(255,107,94,.55);
+  --warn:#E8B840; --warn-soft:#45360F; --warn-ink:#FFE19A; --ok:#6EE09A;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45}
+main{max-width:680px;margin:0 auto;padding:16px 14px 40px}
+h1{font-family:var(--head);font-weight:700;font-size:26px;line-height:1.1;margin:6px 0 4px;letter-spacing:-.01em}
+h2{font-family:var(--head);font-weight:700;font-size:18px;margin:22px 0 8px}
+.sub{color:var(--muted);margin:0 0 14px;font-size:14px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--info-bd);outline-offset:2px;border-radius:8px}
+
+.tabs{display:flex;gap:6px;background:var(--surface);padding:4px;border-radius:14px;border:1px solid var(--line);margin-bottom:14px}
+.tabs button{flex:1;border:0;background:transparent;padding:9px 6px;border-radius:10px;font-weight:600;color:var(--muted)}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.tabs .n{display:inline-block;min-width:20px;padding:0 6px;margin-left:6px;border-radius:10px;background:var(--bad);color:#fff;font-size:12px;line-height:20px}
+
+.weekbar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.weekbar .lbl{flex:1;text-align:center;font-family:var(--head);font-weight:700;font-size:17px}
+.weekbar .lbl small{display:block;font-family:var(--body);font-weight:500;font-size:12.5px;color:var(--muted)}
+.ib{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-size:18px}
+.ib:disabled{opacity:.35;cursor:default}
+.today{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:0 12px;height:42px;font-weight:600}
+
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px}
+.day{position:relative;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:8px 0 7px;text-align:center}
+.day span{display:block;font-size:12.5px;color:var(--muted);font-weight:600}
+.day b{display:block;font-family:var(--head);font-size:20px;line-height:1.15}
+.day[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.day i{position:absolute;top:-6px;right:-3px;font-style:normal;min-width:20px;height:20px;line-height:20px;border-radius:10px;background:var(--bad);color:#fff;font-size:12px;font-weight:600}
+
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin:0 0 10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:14px;border-radius:4px;border:2px solid;display:inline-block}
+.sw.i{background:var(--info-bg);border-color:var(--info-bd)}
+.sw.m{background:var(--mark-bg);border-color:var(--mark-bd)}
+.sw.c{border-color:var(--bad);background:repeating-linear-gradient(135deg,var(--hatch) 0 3px,transparent 3px 6px)}
+
+.tl{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:10px 10px 10px 0;overflow:hidden}
+.gut{width:46px;position:relative;flex:none}
+.gut div{position:absolute;right:8px;transform:translateY(-50%);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.plot{position:relative;flex:1}
+.hl{position:absolute;left:0;right:0;border-top:1px solid var(--line)}
+.blk{position:absolute;z-index:1;border-radius:10px;border:1px solid;border-left-width:5px;padding:5px 8px;overflow:hidden;font-size:13px;line-height:1.3}
+.blk.i{background:var(--info-bg);border-color:var(--info-bd);color:var(--info-ink)}
+.blk.m{background:var(--mark-bg);border-color:var(--mark-bd);color:var(--mark-ink)}
+.blk .t{font-weight:600;font-size:13.5px;line-height:1.25}
+.blk .m1{opacity:.88;font-size:12.5px;margin-top:1px}
+.band{position:absolute;left:0;right:0;z-index:2;pointer-events:none;border-top:2px solid var(--bad);border-bottom:2px solid var(--bad);background:repeating-linear-gradient(135deg,var(--hatch) 0 5px,transparent 5px 10px)}
+.band em{position:absolute;right:4px;top:50%;transform:translateY(-50%);font-style:normal;font-weight:600;font-size:12px;background:var(--bad);color:#fff;border-radius:8px;padding:1px 7px}
+
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:16px;padding:28px 16px;text-align:center;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:11px 13px;margin:8px 0}
+.card.bad{border-left:5px solid var(--bad)}
+.card.soft{border-left:5px solid var(--warn)}
+.card.info{border-left:5px solid var(--info-bd)}
+.card h3{margin:0 0 3px;font-size:15px;font-weight:600}
+.card p{margin:2px 0;font-size:13.5px;color:var(--muted)}
+.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:8px;padding:1px 8px;margin-right:6px}
+.tag.bad{background:var(--bad-soft);color:var(--bad)}
+.tag.soft{background:var(--warn-soft);color:var(--warn-ink)}
+.vs{color:var(--muted);font-weight:500}
+
+.field{margin:16px 0}
+.field>.fl{display:block;font-weight:600;margin-bottom:6px}
+.field small{display:block;color:var(--muted);font-size:13px;margin-top:5px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;min-width:64px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 10px;font-weight:600}
+.seg button small{display:block;font-weight:500;font-size:11.5px;color:var(--muted);margin:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.seg button[aria-pressed="true"] small{color:inherit;opacity:.8}
+.opt{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 12px;margin:6px 0}
+.opt[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.opt .st{margin-left:auto;font-size:13px;font-weight:600;text-align:right}
+.ok{color:var(--ok)}.no{color:var(--bad)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 13px;margin-top:16px}
+details summary{font-weight:600;cursor:pointer}
+details ul{margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:13.5px}
+details li{margin:4px 0}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Plan zajęć: informatyka + marketing</h1>
+  <p class="sub" id="sub"></p>
+  <div class="tabs" role="group" aria-label="Widok">
+    <button data-tab="plan" aria-pressed="true">Plan</button>
+    <button data-tab="kol" aria-pressed="false">Kolizje<span class="n" id="kolN"></span></button>
+    <button data-tab="set" aria-pressed="false">Ustawienia</button>
+  </div>
+  <section id="view"></section>
+</main>
+
+<script>
+/* ================= DANE I LOGIKA ================= */
+const DAYS=['Pn','Wt','Śr','Cz','Pt'];
+const DAYS_FULL=['Poniedziałek','Wtorek','Środa','Czwartek','Piątek'];
+const WEEKS=15;
+const START=new Date(2026,9,5);
+const BHP=['2026-10-23','2026-11-06','2026-11-20'];
+const GRAFIKA=[['8:00','9:30'],['9:45','11:15'],['11:30','13:00'],['13:15','14:45'],['15:00','16:30']];
+const TYPE={wy:'wykład',lab:'lab',cw:'ćw',lekt:'lektorat',war:'gr. warunkowa',inne:'jednorazowo'};
+
+const S={wyk:false,gl:2,grafika:0,metro:'odd'};
+try{Object.assign(S,JSON.parse(localStorage.getItem('plan-final')||'{}'));}catch(e){}
+const save=()=>{try{localStorage.setItem('plan-final',JSON.stringify(S));}catch(e){}};
+const cwOf=g=>g<=2?1:2;
+
+const pad=n=>String(n).padStart(2,'0');
+const toISO=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const dateOf=(w,d)=>{const x=new Date(START);x.setDate(x.getDate()+(w-1)*7+d);return x;};
+const fmt=d=>`${pad(d.getDate())}.${pad(d.getMonth()+1)}`;
+const hm=m=>`${Math.floor(m/60)}:${pad(m%60)}`;
+const T=s=>{const [a,b]=s.split(':').map(Number);return a*60+b;};
+const range=(a,b,ex=[])=>{const r=new Set();for(let i=a;i<=b;i++)if(!ex.includes(i))r.add(i);return r;};
+
+function buildEvents(){
+  const E=[];
+  const add=(src,scope,id,title,type,day,s,e,room,who,place,extra={})=>E.push({src,scope,id,title,type,day,s:T(s),e:T(e),room,who,place,...extra});
+  const I=(...a)=>add('i','all',...a);
+  /* --- informatyka, II rok, I1S 3.3/5 --- */
+  I('i-po-wy','Programowanie obiektowe w Java','wy',0,'8:15','9:45','E301','dr inż. P. Kopniak','info');
+  I('i-mat-wy','Matematyka dla informatyków II','wy',0,'10:00','11:30','E301','dr E. Ratajczyk','info');
+  I('i-sbd-lab','Wprowadzenie do systemów baz danych','lab',0,'11:45','13:15','PE 107','dr inż. K. Żyła','info');
+  I('i-mat-cw','Matematyka dla informatyków II','cw',0,'13:30','15:00','E402','dr E. Ratajczyk','info');
+  I('i-ang','Język angielski I','lekt',0,'15:15','16:45','CT 304','mgr I. Dzieńkowska','info');
+  I('i-ak-lab','Architektura komputerów i prog. niskopoziomowe','lab',1,'12:45','15:00','PE 10','dr inż. K. Skorupski','info',{weeks:range(5,15,[13]),note:'tyg. 5–15, bez 13'});
+  I('i-el-lab','Podstawy elektrotechniki i elektroniki','lab',1,'15:15','16:45','E406','dr inż. D. Zarzeczny','info');
+  I('i-wf','Wychowanie fizyczne I','cw',2,'8:00','9:30','Studium WF','Studium Wychowania Fizycznego','swf');
+  I('i-el-wy','Podstawy elektrotechniki i elektroniki','wy',2,'15:15','17:30','E301','dr inż. L. Jaroszyński','info');
+  I('i-metro-lab','Metrologia','lab',3,'10:00','11:30','E305','prof. dr hab. inż. J. Sikora','info',
+    {weeks:S.metro==='odd'?new Set([1,3,5,7,9,11,13,15]):new Set([1]),note:'„tyg. I”'});
+  I('i-ak-wy','Architektura komputerów i prog. niskopoziomowe','wy',3,'11:45','13:15','E301','prof. dr hab. inż. P. Kisała','info');
+  I('i-alg-wy','Algorytmy analizy numerycznej','wy',3,'13:30','15:00','E301','dr hab. M. Charytanowicz, prof. uczelni','info');
+  I('i-sbd-wy','Wprowadzenie do systemów baz danych','wy',3,'15:15','16:45','E301','dr inż. P. Muryjas','info');
+  I('i-metro-wy','Metrologia','wy',3,'17:00','18:30','E301','dr inż. L. Szczepaniak','info',{weeks:range(1,8),note:'tyg. 1–8'});
+  I('i-wstep','Wstęp do matematyki','war',3,'18:45','20:15','E301','dr E. Nieznaj','info');
+  I('i-alg-lab','Algorytmy analizy numerycznej','lab',4,'13:30','15:00','CT 204','mgr inż. M. Zoła','info');
+  I('i-po-lab','Programowanie obiektowe w Java','lab',4,'15:30','17:00','CT 202','dr inż. T. Nowicki','info');
+
+  /* --- marketing, I rok MiKR1 --- */
+  const M=(scope,...a)=>add('m',scope,...a);
+  M('all','m-mat-wy','Matematyka','wy',0,'15:45','17:15','Ox-305','dr T. Warowny','ox');
+  M('all','m-fin-wy','Wprowadzenie do finansów i rachunkowości','wy',0,'17:30','19:00','Ox-305','dr inż. T. Żminda','ox');
+  M('all','m-zarz-wy','Podstawy zarządzania','wy',4,'8:00','9:30','Ox-10','dr M. Pikul','ox');
+  M('all','m-mkt-wy','Podstawy marketingu','wy',4,'13:15','14:45','Ox-10','dr inż. J. Wyrwisz','ox');
+  M('all','m-eko-wy','Podstawy ekonomii','wy',4,'15:00','16:30','Ox-305','dr M. Czerwińska','ox',{except:BHP});
+  M('all','m-bhp','Bezpieczeństwo i higiena pracy','wy',4,'15:00','16:30','Ox-305','dr hab. inż. K. Czarnocki','ox',{dates:BHP,note:'zamiast wykładu z ekonomii; godziny przyjęte jak przy ekonomii'});
+  /* MiKR1s 1.1 */
+  M('c1','m-bib','Przysposobienie biblioteczne','inne',0,'14:00','15:30','Wydz. Mechaniczny, sala 11','ul. Nadbystrzycka 36','lib',{date:'2026-10-19'});
+  M('c1','m-wf','Wychowanie fizyczne','cw',1,'9:30','11:00','Hala PL / Strefa H2O','Al. Zygmuntowskie 4','zyg');
+  M('c1','m-auto','Autoprezentacja','cw',1,'12:15','14:30','Ox-210','dr inż. J. Wyrwisz','ox');
+  M('c1','m-eko-cw','Podstawy ekonomii','cw',1,'15:00','16:30','Ox-209','mgr P. Bańkowski','ox');
+  M('c1','m-mat-cw','Matematyka','cw',3,'8:00','9:30','Ox-018','dr T. Warowny','ox');
+  M('c1','m-fin-cw','Wprowadzenie do finansów i rachunkowości','cw',3,'11:30','13:00','Ox-018','mgr A. Majek','ox');
+  M('c1','m-mkt-cw','Podstawy marketingu','cw',4,'9:45','11:15','Ox-204','dr inż. J. Wyrwisz','ox');
+  M('c1','m-zarz-cw','Podstawy zarządzania','cw',4,'11:30','13:00','Ox-210','dr M. Pikul','ox');
+  /* MiKR1s 1.2 */
+  M('c2','m-bib','Przysposobienie biblioteczne','inne',1,'8:00','9:30','Wydz. Mechaniczny, sala 11','ul. Nadbystrzycka 36','lib',{date:'2026-10-27'});
+  M('c2','m-wf','Wychowanie fizyczne','cw',1,'11:00','12:30','Hala PL / Strefa H2O','Al. Zygmuntowskie 4','zyg');
+  M('c2','m-eko-cw','Podstawy ekonomii','cw',1,'13:15','14:45','Ox-209','mgr P. Bańkowski','ox');
+  M('c2','m-auto','Autoprezentacja','cw',1,'15:00','17:15','Ox-10','dr inż. J. Wyrwisz','ox');
+  M('c2','m-mat-cw','Matematyka','cw',3,'9:45','11:15','Ox-018','dr T. Warowny','ox');
+  M('c2','m-fin-cw','Wprowadzenie do finansów i rachunkowości','cw',3,'13:15','14:45','Ox-018','mgr A. Majek','ox');
+  M('c2','m-zarz-cw','Podstawy zarządzania','cw',4,'9:45','11:15','Ox-210','mgr inż. K. Brodaczewska-Ruszniak','ox');
+  M('c2','m-mkt-cw','Podstawy marketingu','cw',4,'11:30','13:00','Ox-204','dr inż. J. Wyrwisz','ox');
+  /* laboratoria GL */
+  const PNI='Podstawowe narzędzia informatyczne I',KRE='Kreatywność w marketingu';
+  M('g1','m-pni',PNI,'lab',3,'9:45','11:15','Ox-121','mgr inż. P. Ziń','ox');
+  M('g1','m-kre',KRE,'lab',3,'13:15','14:45','Ox-11','dr inż. M. Cholewa-Wiktor','ox');
+  M('g2','m-kre',KRE,'lab',3,'9:45','11:15','Ox-11','dr inż. M. Cholewa-Wiktor','ox');
+  M('g2','m-pni',PNI,'lab',3,'13:15','14:45','Ox-121','mgr inż. P. Ziń','ox');
+  M('g3','m-pni',PNI,'lab',3,'8:00','9:30','Ox-121','mgr inż. P. Ziń','ox');
+  M('g3','m-kre',KRE,'lab',3,'11:30','13:00','Ox-11','dr inż. M. Cholewa-Wiktor','ox');
+  M('g4','m-kre',KRE,'lab',0,'13:15','14:45','Ox-223','dr inż. M. Cholewa-Wiktor','ox');
+  M('g4','m-pni',PNI,'lab',3,'11:30','13:00','Ox-121','mgr inż. P. Ziń','ox');
+  if(S.grafika>0){
+    const [a,b]=GRAFIKA[S.grafika-1];
+    M('all','m-graf','Grafika komputerowa I','lab',2,a,b,'Ox-124','mgr A. Sulimierska','ox',{note:`grupa ${S.grafika} z 5`});
+  }
+  const cw='c'+cwOf(S.gl),gl='g'+S.gl;
+  return E.filter(e=>(S.wyk||e.type!=='wy')&&(e.scope==='all'||e.scope===cw||e.scope===gl));
+}
+let EVENTS=buildEvents();
+
+function isActive(ev,w,d){
+  if(ev.day!==d) return false;
+  const iso=toISO(dateOf(w,d));
+  if(ev.date) return ev.date===iso;
+  if(ev.dates) return ev.dates.includes(iso);
+  if(ev.except&&ev.except.includes(iso)) return false;
+  if(ev.weeks&&!ev.weeks.has(w)) return false;
+  return true;
+}
+function analyse(w,d){
+  const evs=EVENTS.filter(e=>isActive(e,w,d)).sort((a,b)=>a.s-b.s||a.e-b.e);
+  const conf=[],tight=[];
+  for(let i=0;i<evs.length;i++)for(let j=i+1;j<evs.length;j++){
+    const a=evs[i],b=evs[j];
+    if(a.s<b.e&&b.s<a.e){
+      conf.push({a,b,from:Math.max(a.s,b.s),to:Math.min(a.e,b.e),hard:a.type!=='wy'&&b.type!=='wy'});
+    }else{
+      const first=a.e<=b.s?a:b,second=first===a?b:a,gap=second.s-first.e;
+      if(gap<15&&first.place!==second.place) tight.push({a:first,b:second,gap});
+    }
+  }
+  return {evs,conf,tight};
+}
+function layout(evs){
+  const sorted=[...evs].sort((x,y)=>x.s-y.s||x.e-y.e);
+  const out=[];let cluster=[],clusterEnd=-1;
+  const flush=()=>{
+    if(!cluster.length) return;
+    const lanes=[];
+    cluster.forEach(ev=>{let i=lanes.findIndex(end=>end<=ev.s);if(i<0){i=lanes.length;lanes.push(0);}lanes[i]=ev.e;ev._lane=i;});
+    cluster.forEach(ev=>ev._lanes=lanes.length);
+    out.push(...cluster);cluster=[];clusterEnd=-1;
+  };
+  sorted.forEach(ev=>{if(cluster.length&&ev.s>=clusterEnd) flush();cluster.push(ev);clusterEnd=Math.max(clusterEnd,ev.e);});
+  flush();return out;
+}
+function weeksText(ws){
+  if(ws.length===WEEKS) return 'co tydzień';
+  const parts=[];let s=ws[0],p=ws[0];
+  for(let i=1;i<=ws.length;i++){
+    if(ws[i]===p+1){p=ws[i];continue;}
+    parts.push(s===p?`${s}`:`${s}–${p}`);s=ws[i];p=ws[i];
+  }
+  return 'tyg. '+parts.join(', ');
+}
+function allIssues(){
+  const cm=new Map(),tm=new Map();
+  const push=(m,c,d,w)=>{const k=`${c.a.id}|${c.b.id}|${d}`;if(!m.has(k))m.set(k,{...c,day:d,weeks:[],dates:[]});const o=m.get(k);o.weeks.push(w);o.dates.push(fmt(dateOf(w,d)));};
+  for(let w=1;w<=WEEKS;w++)for(let d=0;d<5;d++){
+    const r=analyse(w,d);
+    r.conf.forEach(c=>push(cm,c,d,w));
+    r.tight.forEach(c=>push(tm,c,d,w));
+  }
+  return {
+    conf:[...cm.values()].sort((x,y)=>x.day-y.day||x.from-y.from),
+    tight:[...tm.values()].sort((x,y)=>x.day-y.day||x.a.e-y.a.e)
+  };
+}
+function grafikaStatus(i){
+  const [a,b]=GRAFIKA[i].map(T);
+  const hit=EVENTS.filter(e=>e.src==='i'&&e.day===2&&a<e.e&&e.s<b);
+  return hit.length?{ok:false,txt:'koliduje: '+hit.map(e=>`${e.title} (${TYPE[e.type]})`).join(', ')}:{ok:true,txt:'bez kolizji'};
+}
+/* ---- koniec danych i logiki ---- */
+
+/* ================= UI ================= */
+const view=document.getElementById('view');
+const today=new Date();
+const midnight=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+const clampW=w=>Math.min(WEEKS,Math.max(1,w));
+const weekNow=Math.floor((midnight-START)/(7*86400000))+1;
+const dowNow=(today.getDay()+6)%7;
+const st={tab:'plan',week:clampW(weekNow+(dowNow>4?1:0)),day:dowNow>4?0:dowNow};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const evName=e=>`${esc(e.title)} <span class="vs">(${TYPE[e.type]})</span>`;
+
+function renderPlan(){
+  const w=st.week,d=st.day;
+  const info=DAYS.map((_,i)=>analyse(w,i));
+  let h=`<div class="weekbar">
+    <button class="ib" id="prev" aria-label="Poprzedni tydzień" ${w<=1?'disabled':''}>‹</button>
+    <div class="lbl">Tydzień ${w}<small>${fmt(dateOf(w,0))} – ${fmt(dateOf(w,4))}</small></div>
+    <button class="today" id="todayBtn">Dziś</button>
+    <button class="ib" id="next" aria-label="Następny tydzień" ${w>=WEEKS?'disabled':''}>›</button>
+  </div>
+  <div class="days">${DAYS.map((n,i)=>`<button class="day" data-day="${i}" aria-pressed="${i===d}"><span>${n}</span><b>${dateOf(w,i).getDate()}</b>${info[i].conf.length?`<i aria-label="${info[i].conf.length} kolizji">${info[i].conf.length}</i>`:''}</button>`).join('')}</div>
+  <div class="legend"><span><i class="sw i"></i>Informatyka</span><span><i class="sw m"></i>Marketing</span><span><i class="sw c"></i>Kolizja</span></div>`;
+  const r=info[d];
+  h+=`<h2 style="margin-top:6px">${DAYS_FULL[d]}, ${fmt(dateOf(w,d))}</h2>`;
+  if(!r.evs.length){
+    h+=`<div class="empty">Brak zajęć tego dnia.</div>`;
+  }else{
+    const lay=layout(r.evs);
+    const PX=1.15;
+    const s0=Math.floor((Math.min(...r.evs.map(e=>e.s))-15)/60)*60;
+    const e0=Math.ceil((Math.max(...r.evs.map(e=>e.e))+15)/60)*60;
+    const H=(e0-s0)*PX;
+    let gut='',lines='';
+    for(let m=s0;m<=e0;m+=60){gut+=`<div style="top:${(m-s0)*PX}px">${hm(m)}</div>`;lines+=`<div class="hl" style="top:${(m-s0)*PX}px"></div>`;}
+    const blocks=lay.map(e=>`<article class="blk ${e.src}" style="top:${(e.s-s0)*PX}px;height:${(e.e-e.s)*PX-2}px;left:calc(${e._lane}*100%/${e._lanes} + 2px);width:calc(100%/${e._lanes} - 4px)">
+      <div class="t">${esc(e.title)}</div><div class="m1">${hm(e.s)}–${hm(e.e)} · ${TYPE[e.type]} · ${esc(e.room)}</div></article>`).join('');
+    const bands=r.conf.map(c=>`<div class="band" style="top:${(c.from-s0)*PX}px;height:${(c.to-c.from)*PX}px"><em>${c.to-c.from} min</em></div>`).join('');
+    h+=`<div class="tl"><div class="gut" style="height:${H}px">${gut}</div><div class="plot" style="height:${H}px">${lines}${blocks}${bands}</div></div>`;
+  }
+  if(d===2&&!S.grafika){
+    h+=`<div class="card info"><h3>Grafika komputerowa I: brak wybranej grupy</h3><p>Marketing ma w środy 5 grup Grafiki po maks. 12 osób. Wybierz swoją w Ustawieniach.</p></div>`;
+  }
+  if(r.conf.length) h+=`<h2>Kolizje tego dnia</h2>`+r.conf.map(c=>cardConf(c)).join('');
+  if(r.tight.length) h+=`<h2>Ciasne przejścia</h2>`+r.tight.map(c=>cardTight(c)).join('');
+  view.innerHTML=h;
+  document.getElementById('prev').onclick=()=>{st.week=clampW(st.week-1);render();};
+  document.getElementById('next').onclick=()=>{st.week=clampW(st.week+1);render();};
+  document.getElementById('todayBtn').onclick=()=>{st.week=clampW(weekNow+(dowNow>4?1:0));st.day=dowNow>4?0:dowNow;render();};
+  view.querySelectorAll('.day').forEach(b=>b.onclick=()=>{st.day=+b.dataset.day;render();});
+}
+function cardConf(c,extra=''){
+  return `<div class="card ${c.hard?'bad':'soft'}">
+    <span class="tag ${c.hard?'bad':'soft'}">${c.hard?'wymaga decyzji':'z wykładem'}</span>
+    <h3>${evName(c.a)} <span class="vs">×</span> ${evName(c.b)}</h3>
+    <p>${hm(c.from)}–${hm(c.to)} wspólnie, ${c.to-c.from} min. ${esc(c.a.room)} / ${esc(c.b.room)}.</p>${extra}</div>`;
+}
+function cardTight(c,extra=''){
+  return `<div class="card soft"><h3>${esc(c.a.title)} <span class="vs">→</span> ${esc(c.b.title)}</h3>
+    <p>${c.gap===0?'Zajęcia stykają się bez przerwy':`Tylko ${c.gap} min przerwy`}, a sale są w różnych miejscach (${esc(c.a.room)} → ${esc(c.b.room)}).</p>${extra}</div>`;
+}
+function renderKol(){
+  const {conf,tight}=allIssues();
+  const hard=conf.filter(c=>c.hard),soft=conf.filter(c=>!c.hard);
+  const when=c=>{let t=weeksText(c.weeks);if(c.weeks.length<=3)t+=` (${c.dates.join(', ')})`;return `<p><b>${DAYS_FULL[c.day]}</b>, ${t}</p>`;};
+  let h=`<p class="sub">Semestr zimowy, tygodnie 1–${WEEKS} od 05.10. Wykłady: ${S.wyk?'pokazane':'ukryte'}. Kolizje: <b>${conf.length}</b>.</p>`;
+  h+=`<h2 style="margin-top:6px">Wymagają decyzji (${hard.length})</h2>`;
+  h+=hard.length?hard.map(c=>cardConf(c,when(c))).join(''):`<div class="empty">Brak.</div>`;
+  if(soft.length) h+=`<h2>Jedna strona to wykład (${soft.length})</h2>`+soft.map(c=>cardConf(c,when(c))).join('');
+  if(tight.length) h+=`<h2>Ciasne przejścia (${tight.length})</h2>`+tight.map(c=>cardTight(c,when(c))).join('');
+  view.innerHTML=h;
+}
+function renderSet(){
+  const gopts=[{v:0,label:'Jeszcze nie wiem'}].concat(GRAFIKA.map((g,i)=>({v:i+1,label:`Grupa ${i+1}: ${g[0]}–${g[1]}`})));
+  let h=`<div class="field"><span class="fl">Wykłady (obu kierunków)</span>
+    <div class="seg"><button data-wyk="0" aria-pressed="${!S.wyk}">Ukryte</button><button data-wyk="1" aria-pressed="${S.wyk}">Pokaż</button></div>
+    <small>Ukryte wykłady nie pojawiają się w planie ani w kolizjach (dotyczy też BHP).</small></div>
+  <div class="field"><span class="fl">Grafika komputerowa I (marketing, środa, Ox-124)</span>
+    ${gopts.map(o=>{let s='';if(o.v>0){const x=grafikaStatus(o.v-1);s=`<span class="st ${x.ok?'ok':'no'}">${esc(x.txt)}</span>`;}
+      return `<button class="opt" data-gr="${o.v}" aria-pressed="${S.grafika===o.v}"><span>${o.label}</span>${s}</button>`;}).join('')}
+    <small>Status liczony względem informatyki, z uwzględnieniem ustawienia wykładów.</small></div>
+  <div class="field"><span class="fl">Grupa laboratoryjna marketingu</span>
+    <div class="seg">${[1,2,3,4].map(g=>`<button data-gl="${g}" aria-pressed="${S.gl===g}">GL 1.0${g}<small>MiKR1s 1.${cwOf(g)}</small></button>`).join('')}</div>
+    <small>Twoja to GL 1.02. Grupa ćwiczeniowa (1.1 albo 1.2) dobiera się automatycznie.</small></div>
+  <div class="field"><span class="fl">Metrologia, laboratorium „tyg. I”</span>
+    <div class="seg"><button data-metro="odd" aria-pressed="${S.metro==='odd'}">Tygodnie nieparzyste</button><button data-metro="first" aria-pressed="${S.metro==='first'}">Tylko tydzień 1</button></div>
+    <small>W planie informatyki stoi tylko „tyg. I”, więc nie wiadomo, czy chodzi o tygodnie nieparzyste, czy wyłącznie o pierwszy.</small></div>
+  <details><summary>Założenia</summary><ul>
+    <li>Semestr od 05.10.2026, 15 tygodni. Tydzień 13 (wyłączony z labów Architektury komputerów) wypada 28.12–03.01.</li>
+    <li>Marketing według planu z 24.09: ćwiczenia według MiKR1s 1.1/1.2, laboratoria według GL.</li>
+    <li>BHP (23.10, 06.11, 20.11) zastępuje wykład z ekonomii. Godzin nie podano, więc przyjąłem te same.</li>
+    <li>„Ciasne przejście” to przerwa krótsza niż 15 min między różnymi miejscami (budynki informatyki, Ox, biblioteka, hale WF).</li>
+    <li>„Wymaga decyzji” oznacza kolizję dwóch zajęć bez wykładu. O obecności decyduje regulamin i prowadzący.</li>
+  </ul></details>`;
+  view.innerHTML=h;
+  view.querySelectorAll('[data-wyk]').forEach(b=>b.onclick=()=>{S.wyk=b.dataset.wyk==='1';apply();});
+  view.querySelectorAll('[data-gr]').forEach(b=>b.onclick=()=>{S.grafika=+b.dataset.gr;apply();});
+  view.querySelectorAll('[data-gl]').forEach(b=>b.onclick=()=>{S.gl=+b.dataset.gl;apply();});
+  view.querySelectorAll('[data-metro]').forEach(b=>b.onclick=()=>{S.metro=b.dataset.metro;apply();});
+}
+function apply(){save();EVENTS=buildEvents();render();}
+function render(){
+  document.getElementById('sub').textContent=`Informatyka II rok (I1S 3.3/5) + Marketing I rok (GL 1.0${S.gl}, MiKR1s 1.${cwOf(S.gl)})${S.grafika?`, Grafika gr. ${S.grafika}`:''}`;
+  document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===st.tab)));
+  const n=allIssues().conf.length;
+  const badge=document.getElementById('kolN');badge.textContent=n||'';badge.style.display=n?'':'none';
+  if(st.tab==='plan') renderPlan(); else if(st.tab==='kol') renderKol(); else renderSet();
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{st.tab=b.dataset.tab;render();window.scrollTo(0,0);});
+render();
+</script>
+</body>
+</html>
